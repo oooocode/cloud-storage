@@ -13,6 +13,7 @@ demo-api/.flattened-pom.xml
 demo-client/.flattened-pom.xml
 
 # Log file
+logs/
 *.log
 *_rpc_port.txt
 
@@ -63,8 +64,6 @@ Temporary Items
 *CodeGeneratorFile
 *temporary
 
-CodeGenerator.java
-TestController.java
 application-dev.yml
 mybatis-generator-config.xml
 ChannelBizRankClient.java

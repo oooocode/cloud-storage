@@ -1,0 +1,34 @@
+spring:
+  #发送邮件配置相关
+  mail:
+    host: smtp.qq.com # 配置邮件服务器的地址 smtp.qq.com
+    port: 465 # 配置邮件服务器的端口（465或587）
+    username: test@qq.com # 配置用户的账号
+    password: 123456 # 配置用户的密码
+  redis:
+    host: 127.0.0.1
+    port: 6379
+#项目目录
+project:
+  folder:
+    D:\workspace\cloud-storage
+
+#日志级别配置
+log:
+  root:
+    level: info
+  #超级管理员id
+admin:
+  emails: test@qq.com
+##qq登陆相关##
+qq:
+  app:
+    id: 12333
+    key: 2222222
+  url:
+    authorization: https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&redirect_uri=%s&state=%s
+    token: https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id=%s&client_secret=%s&code=%s&redirect_uri=%s
+    openid: https://graph.qq.com/oauth2.0/me?access_token=%S
+    redirect: http://easypan.wuhancoder.com/qqlogincalback
+    user:
+      info: https://graph.qq.com/user/get_user_info?access_token=%s&oauth_consumer_key=%s&openid=%s

@@ -36,7 +36,8 @@
         <commons.io.version>2.5</commons.io.version>
         <mybatis-plus-boot-starter.version>3.4.0</mybatis-plus-boot-starter.version>
         <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
-        <version>1.18.24</version>
+        <lombok.version>1.18.24</lombok.version>
+        <redisson-spring-boot-starter.version>3.17.1</redisson-spring-boot-starter.version>
     </properties>
 
     <dependencies>
@@ -109,8 +110,6 @@
 
 
 
-
-
         <!-- 日志版本 -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -166,6 +165,12 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>5.8.16</version>
+        </dependency>
+        <!-- Redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>${redisson-spring-boot-starter.version}</version>
         </dependency>
 
 

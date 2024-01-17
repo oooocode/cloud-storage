@@ -4,7 +4,11 @@ package com.wth.cloudstorage.controller;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import com.wth.cloudstorage.domain.constants.Constant;
+import com.wth.cloudstorage.frame.common.ApiResult;
+import com.wth.cloudstorage.frame.exception.BusinessException;
+import com.wth.cloudstorage.service.CodeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,6 +21,7 @@ import java.io.IOException;
 
 /**
  * 验证码控制器
+ *
  * @author wth
  * @since 2024-01-17
  */
@@ -24,12 +29,16 @@ import java.io.IOException;
 @Slf4j
 public class CodeController {
 
+    @Autowired
+    private CodeService codeService;
+
 
     /**
-     * 验证码
+     * 生成验证码
+     *
      * @param httpServletResponse
      * @param session
-     * @param type 0-登录注册 1-邮箱验证码
+     * @param type                0-登录注册 1-邮箱验证码
      * @throws IOException
      */
     @GetMapping("checkCode")
@@ -44,6 +53,26 @@ public class CodeController {
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         lineCaptcha.write(outputStream);
         outputStream.close();
+    }
+
+    /**
+     * 发送邮箱验证码
+     *
+     * @param session
+     * @param type    0-登录注册 1-邮箱验证码
+     * @throws IOException
+     */
+    @GetMapping("sendEmailCode")
+    public ApiResult<Void> sendEmailCode(HttpSession session, String email, String checkCode, Integer type) throws IOException {
+        try {
+            if (!checkCode.equalsIgnoreCase((String) session.getAttribute(Constant.CHECK_CODE_KEY_EMAIL))) {
+                throw new BusinessException("邮箱验证码错误");
+            }
+        } finally {
+            session.removeAttribute(Constant.CHECK_CODE_KEY_EMAIL);
+        }
+        codeService.sendEmailCode(email, type);
+        return ApiResult.success();
     }
 }
 

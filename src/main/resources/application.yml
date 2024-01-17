@@ -68,6 +68,11 @@ mybatis-plus:
 project:
   folder:
     ${project.folder}
+# 日期序列化为时间戳
+jackson:
+  serialization:
+    write-dates-as-timestamps: true
+
 
 #日志级别配置
 log:

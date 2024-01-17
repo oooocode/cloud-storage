@@ -1,9 +1,9 @@
 package com.wth.cloudstorage.controller;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,8 +13,9 @@ import org.springframework.stereotype.Controller;
  * @author wth
  * @since 2024-01-17
  */
-@Controller
-@RequestMapping("/user")
+@RestController
+@Slf4j
+@RequestMapping("/userInfo")
 public class UserController {
 
 }

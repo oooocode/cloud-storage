@@ -1,4 +1,4 @@
-package com.wth.cloudstorage.domain.constants;
+package com.wth.cloudstorage.constants;
 
 /**
  * @Author: wth

@@ -56,7 +56,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!--参数校验-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
         <!--邮件发送-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -89,7 +93,6 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus-boot-starter.version}</version>
         </dependency>
-
         <!-- 代码生成器 -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -107,8 +110,6 @@
             <artifactId>velocity-engine-core</artifactId>
             <version>2.0</version>
         </dependency>
-
-
 
         <!-- 日志版本 -->
         <dependency>
@@ -134,13 +135,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
-        </dependency>
-
-        <!--apache common-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons.lang3.version}</version>
         </dependency>
         <!-- 通用的编解码器 -->
         <dependency>

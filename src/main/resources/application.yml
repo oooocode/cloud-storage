@@ -43,7 +43,7 @@ spring:
         smtp:
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory # SSL 连接配置
-        debug: true # 开启 debug，这样方便开发者查看邮件发送日志
+        debug: false # 开启 debug，这样方便开发者查看邮件发送日志
   redis:
     database: 0
     host: ${spring.redis.host}

@@ -3,20 +3,21 @@ package com.wth.cloudstorage.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
-import com.wth.cloudstorage.domain.constants.Constant;
+import com.wth.cloudstorage.constants.CommonConstant;
+import com.wth.cloudstorage.domain.vo.req.SendEmailReq;
 import com.wth.cloudstorage.frame.common.ApiResult;
 import com.wth.cloudstorage.frame.exception.BusinessException;
 import com.wth.cloudstorage.service.CodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -46,9 +47,9 @@ public class CodeController {
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
         log.info("验证码为: {}", lineCaptcha.getCode());
         if (type == null || type == 0) {
-            session.setAttribute(Constant.CHECK_CODE_KEY, lineCaptcha.getCode());
+            session.setAttribute(CommonConstant.CHECK_CODE_KEY, lineCaptcha.getCode());
         } else {
-            session.setAttribute(Constant.CHECK_CODE_KEY_EMAIL, lineCaptcha.getCode());
+            session.setAttribute(CommonConstant.CHECK_CODE_KEY_EMAIL, lineCaptcha.getCode());
         }
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         lineCaptcha.write(outputStream);
@@ -58,20 +59,20 @@ public class CodeController {
     /**
      * 发送邮箱验证码
      *
-     * @param session
-     * @param type    0-登录注册 1-邮箱验证码
      * @throws IOException
      */
-    @GetMapping("sendEmailCode")
-    public ApiResult<Void> sendEmailCode(HttpSession session, String email, String checkCode, Integer type) throws IOException {
+    @PostMapping("sendEmailCode")
+    public ApiResult<Void> sendEmailCode(@RequestBody @Valid SendEmailReq sendEmailReq,
+                                         HttpSession session) throws IOException {
+        String checkCode = sendEmailReq.getCheckCode();
         try {
-            if (!checkCode.equalsIgnoreCase((String) session.getAttribute(Constant.CHECK_CODE_KEY_EMAIL))) {
+            if (!checkCode.equalsIgnoreCase((String) session.getAttribute(CommonConstant.CHECK_CODE_KEY_EMAIL))) {
                 throw new BusinessException("邮箱验证码错误");
             }
         } finally {
-            session.removeAttribute(Constant.CHECK_CODE_KEY_EMAIL);
+            session.removeAttribute(CommonConstant.CHECK_CODE_KEY_EMAIL);
         }
-        codeService.sendEmailCode(email, type);
+        codeService.sendEmailCode(sendEmailReq.getEmail(), sendEmailReq.getType());
         return ApiResult.success();
     }
 }

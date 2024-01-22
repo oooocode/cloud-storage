@@ -10,6 +10,8 @@ public class RedisKey {
 
     public static final String EMAIL_CODE_KEY = "code:email:%s";
 
+    public static final String USER_SPACE = "user:space:%s";
+
     public static String getKey(String key, Object... o) {
         return BASE_KEY + String.format(key, o);
     }

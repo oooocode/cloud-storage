@@ -45,11 +45,12 @@ public class CodeController {
     @GetMapping("checkCode")
     public void checkCode(HttpServletResponse httpServletResponse, HttpSession session, Integer type) throws IOException {
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
-        log.info("验证码为: {}", lineCaptcha.getCode());
         if (type == null || type == 0) {
             session.setAttribute(CommonConstant.CHECK_CODE_KEY, lineCaptcha.getCode());
+            log.info("验证码为: {}", lineCaptcha.getCode());
         } else {
             session.setAttribute(CommonConstant.CHECK_CODE_KEY_EMAIL, lineCaptcha.getCode());
+            log.info("邮箱验证码为: {}", lineCaptcha.getCode());
         }
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         lineCaptcha.write(outputStream);

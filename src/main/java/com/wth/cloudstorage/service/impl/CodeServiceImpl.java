@@ -10,7 +10,9 @@ import com.wth.cloudstorage.frame.config.EmailConfig;
 import com.wth.cloudstorage.frame.exception.BusinessException;
 import com.wth.cloudstorage.frame.utils.RedisUtils;
 import com.wth.cloudstorage.service.CodeService;
+import jodd.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -56,6 +58,16 @@ public class CodeServiceImpl implements CodeService {
         log.info("邮箱验证码为: {}", emailCode);
         // 设置code到Redis
         RedisUtils.set(key, emailCode,  CommonConstant.EMAIL_CODE_EXPIRE, TimeUnit.MINUTES);
+    }
+
+    @Override
+    public Boolean checkCode(String email, String emailCode) {
+        if (StringUtil.isBlank(email)) {
+            throw new BusinessException("邮箱为空!");
+        }
+        String key = RedisKey.getKey(RedisKey.EMAIL_CODE_KEY, email);
+        String code = RedisUtils.getStr(key);
+        return StringUtils.equals(code, emailCode);
     }
 
     private void sendEmail(String email, String emailCode) {

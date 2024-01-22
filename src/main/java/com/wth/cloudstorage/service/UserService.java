@@ -1,5 +1,8 @@
 package com.wth.cloudstorage.service;
 
+import com.wth.cloudstorage.domain.vo.resp.UserResp;
+import com.wth.cloudstorage.domain.vo.req.RegisterReq;
+
 /**
  * <p>
  * 用户表 服务类
@@ -10,4 +13,7 @@ package com.wth.cloudstorage.service;
  */
 public interface UserService {
 
+    Long register(RegisterReq registerReq);
+
+    UserResp login(String email, String password);
 }

@@ -81,14 +81,26 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    @TableField(value = "create_time")
     private Date createTime;
 
     /**
      * 修改时间
      */
-    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "update_time")
     private Date updateTime;
+
+    /**
+     * 使用空间 单位byte
+     */
+    @TableField(value = "use_space")
+    private Long useSpace;
+
+    /**
+     * 总空间 单位byte
+     */
+    @TableField(value = "total_space")
+    private Long totalSpace;
 
     /**
      * 逻辑删除 0-存在 1-删除

@@ -8,4 +8,6 @@ public interface CodeService {
 
 
     void sendEmailCode(String email, Integer type);
+
+    Boolean checkCode(String email, String emailCode);
 }

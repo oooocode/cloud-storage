@@ -93,3 +93,12 @@ qq:
     redirect: ${qq.url.redirect}
     user:
       info: ${qq.url.user.info}
+
+cos:
+  client:
+    accessKey: ${cos.client.accessKey}
+    secretKey: ${cos.client.secretKey}
+    region: ${cos.client.region}
+    bucket: ${cos.client.bucket}
+    host: ${cos.client.host}
+

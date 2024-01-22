@@ -1,9 +1,12 @@
 package com.wth.cloudstorage.service.impl;
 
+import cn.hutool.core.bean.copier.BeanCopier;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.wth.cloudstorage.constants.CommonConstant;
 import com.wth.cloudstorage.constants.RedisKey;
+import com.wth.cloudstorage.domain.enums.ResponseCodeEnum;
 import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
+import com.wth.cloudstorage.domain.vo.req.UpdateUserReq;
 import com.wth.cloudstorage.domain.vo.resp.UserResp;
 import com.wth.cloudstorage.dao.UserDao;
 import com.wth.cloudstorage.domain.dto.UserSpaceDto;
@@ -14,14 +17,17 @@ import com.wth.cloudstorage.frame.exception.BusinessException;
 import com.wth.cloudstorage.frame.utils.RedisUtils;
 import com.wth.cloudstorage.service.CodeService;
 import com.wth.cloudstorage.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static com.wth.cloudstorage.constants.CommonConstant.SESSION_KEY;
 import static com.wth.cloudstorage.constants.CommonConstant.USER_SPACE_EXPIRE;
 import static com.wth.cloudstorage.constants.RedisKey.USER_SPACE;
 
@@ -98,7 +104,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean updateUserInfo(User user) {
+    public Boolean updateUserInfo(UpdateUserReq updateUserReq) {
+        if (updateUserReq == null) {
+            throw new BusinessException(ResponseCodeEnum.CODE_600);
+        }
+        User user = new User();
+        BeanUtils.copyProperties(updateUserReq, user);
         return userDao.updateById(user);
     }
 
@@ -108,5 +119,17 @@ public class UserServiceImpl implements UserService {
         user.setId(updatePasswordReq.getUserId());
         user.setPassword(DigestUtil.md5Hex(updatePasswordReq.getPassword()));
         return userDao.updateById(user);
+    }
+
+    @Override
+    public UserResp getLoginUser(HttpServletRequest request) {
+        if (request == null) {
+            return null;
+        }
+        Object userObj = request.getSession().getAttribute(SESSION_KEY);
+        if (userObj == null) {
+            throw new BusinessException(ResponseCodeEnum.CODE_901);
+        }
+        return (UserResp) userObj;
     }
 }

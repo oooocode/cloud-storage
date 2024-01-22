@@ -3,8 +3,11 @@ package com.wth.cloudstorage.service;
 import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
 import com.wth.cloudstorage.domain.dto.UserSpaceDto;
 import com.wth.cloudstorage.domain.entity.User;
+import com.wth.cloudstorage.domain.vo.req.UpdateUserReq;
 import com.wth.cloudstorage.domain.vo.resp.UserResp;
 import com.wth.cloudstorage.domain.vo.req.RegisterReq;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -24,8 +27,9 @@ public interface UserService {
 
     UserSpaceDto getUseSpace(Long userId);
 
-    Boolean updateUserInfo(User user);
+    Boolean updateUserInfo(UpdateUserReq updateUserReq);
 
     Boolean updatePassword(UpdatePasswordReq updatePasswordReq);
 
+    UserResp getLoginUser(HttpServletRequest request);
 }

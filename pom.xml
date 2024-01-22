@@ -32,7 +32,7 @@
         <aspectjweaver.version>1.9.4</aspectjweaver.version>
         <fastjson.version>1.2.66</fastjson.version>
         <commons.lang3.version>3.4</commons.lang3.version>
-        <commons.codec.version>1.9</commons.codec.version>
+        <commons.codec.version>1.10</commons.codec.version>
         <commons.io.version>2.5</commons.io.version>
         <mybatis-plus-boot-starter.version>3.4.0</mybatis-plus-boot-starter.version>
         <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
@@ -123,7 +123,18 @@
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
         </dependency>
-
+        <!-- https://cloud.tencent.com/document/product/436/10199-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.89</version>
+        </dependency>
+<!--        &lt;!&ndash; 腾讯依赖 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.qcloud</groupId>-->
+<!--            <artifactId>qcloud-java-sdk</artifactId>-->
+<!--            <version>2.0.1</version>-->
+<!--        </dependency>-->
         <!--切面-->
         <dependency>
             <groupId>org.aspectj</groupId>

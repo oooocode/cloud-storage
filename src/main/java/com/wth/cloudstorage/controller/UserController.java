@@ -3,10 +3,7 @@ package com.wth.cloudstorage.controller;
 
 import com.wth.cloudstorage.domain.dto.UserSpaceDto;
 import com.wth.cloudstorage.domain.entity.User;
-import com.wth.cloudstorage.domain.vo.req.LoginReq;
-import com.wth.cloudstorage.domain.vo.req.RegisterReq;
-import com.wth.cloudstorage.domain.vo.req.ResetPwdReq;
-import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
+import com.wth.cloudstorage.domain.vo.req.*;
 import com.wth.cloudstorage.domain.vo.resp.UserResp;
 import com.wth.cloudstorage.frame.annotation.CheckLogin;
 import com.wth.cloudstorage.frame.common.ApiResult;
@@ -127,12 +124,12 @@ public class UserController {
      */
     @PostMapping("/updateUserInfo")
     @CheckLogin
-    public ApiResult<Boolean> updateUserInfo(@RequestBody User user) {
-        return ApiResult.success(userService.updateUserInfo(user));
+    public ApiResult<Boolean> updateUserInfo(@RequestBody UpdateUserReq updateUserReq) {
+        return ApiResult.success(userService.updateUserInfo(updateUserReq));
     }
 
     /**
-     * 修改用户信息
+     * 修改密码
      */
     @PostMapping("/updatePassword")
     @CheckLogin

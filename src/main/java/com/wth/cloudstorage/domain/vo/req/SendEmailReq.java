@@ -20,7 +20,7 @@ public class SendEmailReq {
     @NotBlank
     private String checkCode;
     /**
-     * 0-登录注册 1-邮箱验证码
+     * 0-登录注册 1-找回密码
      */
     @NotNull
     private Integer type;

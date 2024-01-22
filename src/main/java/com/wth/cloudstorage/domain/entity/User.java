@@ -57,8 +57,8 @@ public class User implements Serializable {
     /**
      * qq头像
      */
-    @TableField("qq_avatar")
-    private String qqAvatar;
+    @TableField("avatar")
+    private String avatar;
 
     /**
      * 密码

@@ -1,9 +1,9 @@
 package com.wth.cloudstorage.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.wth.cloudstorage.constants.CommonConstant;
 import com.wth.cloudstorage.constants.RedisKey;
+import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
 import com.wth.cloudstorage.domain.vo.resp.UserResp;
 import com.wth.cloudstorage.dao.UserDao;
 import com.wth.cloudstorage.domain.dto.UserSpaceDto;
@@ -17,12 +17,13 @@ import com.wth.cloudstorage.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.wth.cloudstorage.constants.CommonConstant.USER_SPACE_EXPIRE;
+import static com.wth.cloudstorage.constants.RedisKey.USER_SPACE;
 
 /**
  * @Author: wth
@@ -70,11 +71,42 @@ public class UserServiceImpl implements UserService {
         // todo 文件表查询使用容量
         userSpaceDto.setUseSpace(0L);
         userSpaceDto.setTotalSpace(user.getTotalSpace());
-        RedisUtils.set(RedisKey.getKey(RedisKey.USER_SPACE,
+        RedisUtils.set(RedisKey.getKey(USER_SPACE,
                 user.getId()), userSpaceDto,
                 USER_SPACE_EXPIRE,
                 TimeUnit.MINUTES);
         userResp.setUserSpaceDto(userSpaceDto);
         return userResp;
+    }
+
+    @Override
+    public void resetPwd(String email, String emailCode, String password) {
+        User user = userDao.getByEmail(email);
+        if (Objects.isNull(user)) {
+            throw new BusinessException("用户不存在");
+        }
+        codeService.checkCode(email, emailCode);
+        user.setPassword(DigestUtil.md5Hex(password));
+        userDao.updateById(user);
+    }
+
+    @Override
+    public UserSpaceDto getUseSpace(Long userId) {
+        return Optional.ofNullable(
+                    RedisUtils.get(RedisKey.getKey(USER_SPACE, userId), UserSpaceDto.class)
+                ).orElse(new UserSpaceDto());
+    }
+
+    @Override
+    public Boolean updateUserInfo(User user) {
+        return userDao.updateById(user);
+    }
+
+    @Override
+    public Boolean updatePassword(UpdatePasswordReq updatePasswordReq) {
+        User user = new User();
+        user.setId(updatePasswordReq.getUserId());
+        user.setPassword(DigestUtil.md5Hex(updatePasswordReq.getPassword()));
+        return userDao.updateById(user);
     }
 }

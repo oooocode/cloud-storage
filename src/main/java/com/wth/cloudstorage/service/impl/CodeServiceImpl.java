@@ -3,8 +3,8 @@ package com.wth.cloudstorage.service.impl;
 import cn.hutool.core.util.RandomUtil;
 import com.wth.cloudstorage.constants.CommonConstant;
 import com.wth.cloudstorage.constants.EmailConstant;
-import com.wth.cloudstorage.dao.UserDao;
 import com.wth.cloudstorage.constants.RedisKey;
+import com.wth.cloudstorage.dao.UserDao;
 import com.wth.cloudstorage.domain.entity.User;
 import com.wth.cloudstorage.frame.config.EmailConfig;
 import com.wth.cloudstorage.frame.exception.BusinessException;
@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -45,19 +46,27 @@ public class CodeServiceImpl implements CodeService {
     private EmailConfig emailConfig;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void sendEmailCode(String email, Integer type) {
+        // 注册逻辑
         if (type == 0) {
             User user = userDao.getByEmail(email);
             if (Objects.nonNull(user)) {
                 throw new BusinessException("邮箱已存在");
             }
         }
-        String key = RedisKey.getKey(RedisKey.EMAIL_CODE_KEY, email);
         String emailCode = RandomUtil.randomNumbers(CommonConstant.EMAIL_CODE_LENGTH);
+        // 设置邮箱到Redis
+        setEmailCodeToRedis(email, emailCode);
+        // 发送邮件
         sendEmail(email, emailCode);
-        log.info("邮箱验证码为: {}", emailCode);
+    }
+
+    private void setEmailCodeToRedis(String email, String emailCode) {
+        String key = RedisKey.getKey(RedisKey.EMAIL_CODE_KEY, email);
         // 设置code到Redis
-        RedisUtils.set(key, emailCode,  CommonConstant.EMAIL_CODE_EXPIRE, TimeUnit.MINUTES);
+        RedisUtils.set(key, emailCode, CommonConstant.EMAIL_CODE_EXPIRE, TimeUnit.MINUTES);
+        log.info("邮箱验证码为: {}", emailCode);
     }
 
     @Override

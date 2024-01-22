@@ -1,5 +1,6 @@
 package com.wth.cloudstorage.frame.exception;
 
+import com.wth.cloudstorage.domain.enums.ResponseCodeEnum;
 import lombok.Getter;
 
 /**
@@ -21,5 +22,11 @@ public class BusinessException extends RuntimeException{
         super(errorMsg);
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
+    }
+
+    public BusinessException(ResponseCodeEnum responseCodeEnum) {
+        super(responseCodeEnum.getDesc());
+        this.errorCode = responseCodeEnum.getCode();
+        this.errorMsg = responseCodeEnum.getDesc();
     }
 }

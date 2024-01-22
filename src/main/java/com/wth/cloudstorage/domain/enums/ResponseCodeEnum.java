@@ -17,6 +17,7 @@ public enum ResponseCodeEnum {
     CODE_600(600, "请求参数错误"),
     CODE_500(500, "服务器出小差了"),
     CODE_601(601, "信息已经存在"),
+    CODE_901(901, "登录超时，请稍后重试"),
     ;
 
     private final int code;

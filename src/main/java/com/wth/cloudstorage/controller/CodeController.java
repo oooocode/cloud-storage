@@ -47,10 +47,10 @@ public class CodeController {
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
         if (type == null || type == 0) {
             session.setAttribute(CommonConstant.CHECK_CODE_KEY, lineCaptcha.getCode());
-            log.info("验证码为: {}", lineCaptcha.getCode());
+            log.info("普通图片验证码为: {}", lineCaptcha.getCode());
         } else {
             session.setAttribute(CommonConstant.CHECK_CODE_KEY_EMAIL, lineCaptcha.getCode());
-            log.info("邮箱验证码为: {}", lineCaptcha.getCode());
+            log.info("发送邮箱图片验证码为: {}", lineCaptcha.getCode());
         }
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         lineCaptcha.write(outputStream);

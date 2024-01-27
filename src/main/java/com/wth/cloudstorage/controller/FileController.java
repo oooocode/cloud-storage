@@ -9,7 +9,7 @@ import com.wth.cloudstorage.frame.annotation.CheckLogin;
 import com.wth.cloudstorage.frame.common.ApiResult;
 import com.wth.cloudstorage.frame.config.CosClientConfig;
 import com.wth.cloudstorage.frame.exception.BusinessException;
-import com.wth.cloudstorage.manager.CosManager;
+import com.wth.cloudstorage.frame.manager.CosManager;
 import com.wth.cloudstorage.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;

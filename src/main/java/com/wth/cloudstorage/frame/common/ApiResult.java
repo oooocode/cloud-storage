@@ -1,6 +1,6 @@
 package com.wth.cloudstorage.frame.common;
 
-import com.wth.cloudstorage.domain.enums.ResponseCodeEnum;
+import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
 import lombok.Data;
 
 @Data

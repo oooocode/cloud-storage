@@ -1,4 +1,4 @@
-package com.wth.cloudstorage.frame.manager;
+package com.wth.cloudstorage.manager;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;

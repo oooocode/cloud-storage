@@ -1,7 +1,7 @@
 package com.wth.cloudstorage.frame.aspect;
 
 import com.wth.cloudstorage.constants.CommonConstant;
-import com.wth.cloudstorage.domain.enums.ResponseCodeEnum;
+import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
 import com.wth.cloudstorage.domain.vo.resp.UserResp;
 import com.wth.cloudstorage.frame.exception.BusinessException;
 import org.aspectj.lang.ProceedingJoinPoint;

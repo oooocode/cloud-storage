@@ -8,7 +8,7 @@ import com.wth.cloudstorage.dao.UserDao;
 import com.wth.cloudstorage.domain.entity.User;
 import com.wth.cloudstorage.frame.config.EmailConfig;
 import com.wth.cloudstorage.frame.exception.BusinessException;
-import com.wth.cloudstorage.frame.utils.RedisUtils;
+import com.wth.cloudstorage.utils.RedisUtils;
 import com.wth.cloudstorage.service.CodeService;
 import jodd.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;

@@ -1,15 +1,15 @@
 package com.wth.cloudstorage.controller;
 
 import cn.hutool.core.io.FileUtil;
-import com.wth.cloudstorage.domain.enums.FileUploadBizEnum;
-import com.wth.cloudstorage.domain.enums.ResponseCodeEnum;
+import com.wth.cloudstorage.constants.enums.FileUploadBizEnum;
+import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
 import com.wth.cloudstorage.domain.vo.req.UploadFileReq;
 import com.wth.cloudstorage.domain.vo.resp.UserResp;
 import com.wth.cloudstorage.frame.annotation.CheckLogin;
 import com.wth.cloudstorage.frame.common.ApiResult;
 import com.wth.cloudstorage.frame.config.CosClientConfig;
 import com.wth.cloudstorage.frame.exception.BusinessException;
-import com.wth.cloudstorage.frame.manager.CosManager;
+import com.wth.cloudstorage.manager.CosManager;
 import com.wth.cloudstorage.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -26,7 +26,6 @@ import java.util.Arrays;
 
 /**
  * 文件接口
- *
  */
 @RestController
 @RequestMapping("/file")

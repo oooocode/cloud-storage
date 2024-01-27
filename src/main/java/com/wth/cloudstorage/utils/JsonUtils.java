@@ -1,4 +1,4 @@
-package com.wth.cloudstorage.frame.utils;
+package com.wth.cloudstorage.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -1,10 +1,10 @@
 package com.wth.cloudstorage.dao;
 
-import com.wth.cloudstorage.domain.entity.User;
-import com.wth.cloudstorage.domain.enums.UserStatusEnum;
-import com.wth.cloudstorage.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
+import com.wth.cloudstorage.domain.entity.User;
+import com.wth.cloudstorage.constants.enums.UserStatusEnum;
+import com.wth.cloudstorage.mapper.UserMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author wth
  * @since 2024-01-17
  */
-@Service
+@Repository
 public class UserDao extends ServiceImpl<UserMapper, User> {
 
     public User getByEmail(String email) {

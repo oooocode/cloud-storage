@@ -1,6 +1,6 @@
 package com.wth.cloudstorage.frame.exception;
 
-import com.wth.cloudstorage.domain.enums.ResponseCodeEnum;
+import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
 import com.wth.cloudstorage.frame.common.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;

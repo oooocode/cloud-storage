@@ -1,4 +1,4 @@
-package com.wth.cloudstorage.frame.utils;
+package com.wth.cloudstorage.utils;
 
 import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;

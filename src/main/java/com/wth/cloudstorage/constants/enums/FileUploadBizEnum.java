@@ -1,4 +1,4 @@
-package com.wth.cloudstorage.domain.enums;
+package com.wth.cloudstorage.constants.enums;
 
 import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;

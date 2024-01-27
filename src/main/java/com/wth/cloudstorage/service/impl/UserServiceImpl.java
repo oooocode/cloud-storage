@@ -1,10 +1,9 @@
 package com.wth.cloudstorage.service.impl;
 
-import cn.hutool.core.bean.copier.BeanCopier;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.wth.cloudstorage.constants.CommonConstant;
 import com.wth.cloudstorage.constants.RedisKey;
-import com.wth.cloudstorage.domain.enums.ResponseCodeEnum;
+import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
 import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
 import com.wth.cloudstorage.domain.vo.req.UpdateUserReq;
 import com.wth.cloudstorage.domain.vo.resp.UserResp;
@@ -14,7 +13,7 @@ import com.wth.cloudstorage.domain.entity.User;
 import com.wth.cloudstorage.domain.vo.req.RegisterReq;
 import com.wth.cloudstorage.frame.config.AppConfig;
 import com.wth.cloudstorage.frame.exception.BusinessException;
-import com.wth.cloudstorage.frame.utils.RedisUtils;
+import com.wth.cloudstorage.utils.RedisUtils;
 import com.wth.cloudstorage.service.CodeService;
 import com.wth.cloudstorage.service.UserService;
 import org.springframework.beans.BeanUtils;

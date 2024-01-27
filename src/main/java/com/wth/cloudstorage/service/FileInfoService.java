@@ -15,5 +15,5 @@ import com.wth.cloudstorage.domain.vo.req.PageBaseReq;
  */
 public interface FileInfoService {
 
-    IPage<FileInfo> pageFileInfo(FileInfoReq req);
+    IPage<FileInfo> pageFileInfo(PageBaseReq<FileInfoReq> req);
 }

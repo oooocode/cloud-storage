@@ -42,9 +42,9 @@ public class FileInfoController {
      * 分页查询文件
      */
     @PostMapping("loadDataList")
-    public PageBaseResp<FileInfo> loadDataList(@RequestBody FileInfoReq req, HttpSession httpSession) {
+    public PageBaseResp<FileInfo> loadDataList(@RequestBody PageBaseReq<FileInfoReq> req, HttpSession httpSession) {
         UserResp user = (UserResp) httpSession.getAttribute(SESSION_KEY);
-        req.setUserId(user.getUserId());
+        req.getFilter().setUserId(user.getUserId());
         IPage<FileInfo> fileInfoPage = fileInfoService.pageFileInfo(req);
         return PageBaseResp.init(fileInfoPage);
     }

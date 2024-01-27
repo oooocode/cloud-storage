@@ -11,7 +11,7 @@ import java.util.Date;
  * @since 2024-01-27
  */
 @Data
-public class FileInfoReq extends PageBaseReq implements Serializable {
+public class FileInfoReq implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -11,13 +11,15 @@ import javax.validation.constraints.Min;
  * @since 2023-03-19
  */
 @Data
-public class PageBaseReq {
+public class PageBaseReq<T> {
 
     @Min(0)
     @Max(50)
     private Integer pageSize = 10;
 
     private Integer pageNo = 1;
+
+    private T filter;
 
     /**
      * 获取mybatisPlus的page

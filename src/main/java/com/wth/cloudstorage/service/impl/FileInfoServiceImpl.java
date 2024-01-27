@@ -22,9 +22,10 @@ public class FileInfoServiceImpl implements FileInfoService {
     private FileInfoDao fileInfoDao;
 
     @Override
-    public IPage<FileInfo> pageFileInfo(FileInfoReq req) {
+    public IPage<FileInfo> pageFileInfo(PageBaseReq<FileInfoReq> req) {
         Page pageParam = req.plusPage();
-        Page page = fileInfoDao.pageFile(pageParam, req);
+        FileInfoReq filter = req.getFilter();
+        Page page = fileInfoDao.pageFile(pageParam, filter);
         return page;
     }
 }

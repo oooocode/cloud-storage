@@ -4,7 +4,7 @@ package com.wth.cloudstorage.controller;
 import com.wth.cloudstorage.domain.dto.UserSpaceDto;
 import com.wth.cloudstorage.domain.entity.User;
 import com.wth.cloudstorage.domain.vo.req.*;
-import com.wth.cloudstorage.domain.vo.resp.UserResp;
+import com.wth.cloudstorage.domain.vo.resp.UserDto;
 import com.wth.cloudstorage.frame.annotation.CheckLogin;
 import com.wth.cloudstorage.frame.common.ApiResult;
 import com.wth.cloudstorage.frame.exception.BusinessException;
@@ -58,16 +58,16 @@ public class UserController {
      * 登录
      */
     @PostMapping("login")
-    public ApiResult<UserResp> login(@RequestBody @Valid LoginReq loginReq,
+    public ApiResult<UserDto> login(@RequestBody @Valid LoginReq loginReq,
                                      HttpSession session) throws IOException {
         try {
             if (!loginReq.getCheckCode()
                     .equalsIgnoreCase((String) session.getAttribute(CHECK_CODE_KEY))) {
                 throw new BusinessException("图片验证码错误");
             }
-            UserResp userResp = userService.login(loginReq.getEmail(), loginReq.getPassword());
-            session.setAttribute(SESSION_KEY, userResp);
-            return ApiResult.success(userResp);
+            UserDto UserDto = userService.login(loginReq.getEmail(), loginReq.getPassword());
+            session.setAttribute(SESSION_KEY, UserDto);
+            return ApiResult.success(UserDto);
         } finally {
             session.removeAttribute(CHECK_CODE_KEY);
         }
@@ -105,8 +105,8 @@ public class UserController {
      */
     @GetMapping("/getUserInfo")
     @CheckLogin
-    public ApiResult<UserResp> getUserInfo(HttpSession httpSession) {
-        return ApiResult.success((UserResp) httpSession.getAttribute(SESSION_KEY));
+    public ApiResult<UserDto> getUserInfo(HttpSession httpSession) {
+        return ApiResult.success(userService.getLoginUser(httpSession));
     }
 
     /**
@@ -115,8 +115,8 @@ public class UserController {
     @GetMapping("/getUseSpace")
     @CheckLogin
     public ApiResult<UserSpaceDto> getUseSpace(HttpSession httpSession) {
-        UserResp userResp = (UserResp) httpSession.getAttribute(SESSION_KEY);
-        return ApiResult.success(userService.getUseSpace(userResp.getUserId()));
+        UserDto loginUser = userService.getLoginUser(httpSession);
+        return ApiResult.success(userService.getUseSpace(loginUser.getUserId()));
     }
 
     /**
@@ -135,8 +135,8 @@ public class UserController {
     @CheckLogin
     public ApiResult<Boolean> updatePassword(@RequestBody UpdatePasswordReq updatePasswordReq,
                                              HttpSession httpSession) {
-        UserResp userResp = (UserResp) httpSession.getAttribute(SESSION_KEY);
-        updatePasswordReq.setUserId(userResp.getUserId());
+        UserDto loginUser = userService.getLoginUser(httpSession);
+        updatePasswordReq.setUserId(loginUser.getUserId());
         return ApiResult.success(userService.updatePassword(updatePasswordReq));
     }
 

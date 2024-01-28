@@ -8,7 +8,7 @@ import lombok.Data;
  * @Create: 2024/1/22 - 15:52
  */
 @Data
-public class UserResp {
+public class UserDto {
 
     private Long userId;
     private String nickName;

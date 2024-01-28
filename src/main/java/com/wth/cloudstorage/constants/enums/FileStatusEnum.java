@@ -9,7 +9,7 @@ public enum FileStatusEnum {
      * 文件状态枚举
      */
     SUCCESS(0,"转码成功"),
-    PROCESS(1,"转码失败"),
+    PROCESSING(1,"转码中"),
     FAIL(2,"转码失败"),
     ;
 

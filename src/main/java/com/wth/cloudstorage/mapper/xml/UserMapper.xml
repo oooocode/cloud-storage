@@ -2,4 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wth.cloudstorage.mapper.UserMapper">
 
+    <update id="updateUserSpace">
+        update user
+        <set>
+            use_space = use_space + #{fileSize}
+        </set>
+        where id = #{userId}
+        <if test="use_space != null">
+            and use_space = use_space + #{fileSize}
+        </if>
+    </update>
 </mapper>

@@ -2,7 +2,7 @@ package com.wth.cloudstorage.frame.aspect;
 
 import com.wth.cloudstorage.constants.CommonConstant;
 import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
-import com.wth.cloudstorage.domain.vo.resp.UserResp;
+import com.wth.cloudstorage.domain.vo.resp.UserDto;
 import com.wth.cloudstorage.frame.exception.BusinessException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -28,8 +28,8 @@ public class CheckLoginAspect {
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
-        UserResp userResp = (UserResp) session.getAttribute(CommonConstant.SESSION_KEY);
-        if (userResp == null) {
+        UserDto UserDto = (UserDto) session.getAttribute(CommonConstant.SESSION_KEY);
+        if (UserDto == null) {
             throw new BusinessException(ResponseCodeEnum.CODE_901);
         }
         return joinPoint.proceed();

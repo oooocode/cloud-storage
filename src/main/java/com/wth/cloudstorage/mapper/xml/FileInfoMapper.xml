@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wth.cloudstorage.mapper.FileInfoMapper">
 
+    <select id="selectUseSpace" resultType="java.lang.Long">
+        select nullif(sum(`size`), 0))
+            from file_info
+        where user_id = #{userId}
+    </select>
 </mapper>

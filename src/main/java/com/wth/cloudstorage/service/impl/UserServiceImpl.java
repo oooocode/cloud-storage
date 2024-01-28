@@ -4,26 +4,26 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.wth.cloudstorage.constants.CommonConstant;
 import com.wth.cloudstorage.constants.RedisKey;
 import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
-import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
-import com.wth.cloudstorage.domain.vo.req.UpdateUserReq;
-import com.wth.cloudstorage.domain.vo.resp.UserResp;
+import com.wth.cloudstorage.dao.FileInfoDao;
 import com.wth.cloudstorage.dao.UserDao;
 import com.wth.cloudstorage.domain.dto.UserSpaceDto;
 import com.wth.cloudstorage.domain.entity.User;
 import com.wth.cloudstorage.domain.vo.req.RegisterReq;
+import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
+import com.wth.cloudstorage.domain.vo.req.UpdateUserReq;
+import com.wth.cloudstorage.domain.vo.resp.UserDto;
 import com.wth.cloudstorage.frame.config.AppConfig;
 import com.wth.cloudstorage.frame.exception.BusinessException;
-import com.wth.cloudstorage.utils.RedisUtils;
 import com.wth.cloudstorage.service.CodeService;
 import com.wth.cloudstorage.service.UserService;
+import com.wth.cloudstorage.utils.RedisUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.wth.cloudstorage.constants.CommonConstant.SESSION_KEY;
@@ -44,6 +44,9 @@ public class UserServiceImpl implements UserService {
     private AppConfig appConfig;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private FileInfoDao fileInfoDao;
+
     @Override
     public Long register(RegisterReq registerReq) {
         String emailCode = registerReq.getEmailCode();
@@ -61,27 +64,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResp login(String email, String password) {
+    public UserDto login(String email, String password) {
         String dbPassword = DigestUtil.md5Hex(password);
         User user = userDao.getByEmailAndPassword(email, dbPassword);
         if (Objects.isNull(user)) {
             throw new BusinessException("用户不存在!");
         }
-        UserResp userResp = new UserResp();
-        userResp.setUserId(user.getId());
-        userResp.setNickName(user.getNickName());
+        UserDto userDto = new UserDto();
+        userDto.setUserId(user.getId());
+        userDto.setNickName(user.getNickName());
         boolean isAdmin = Arrays.asList(appConfig.getAdminEmail().split(",")).contains(email);
-        userResp.setAdmin(isAdmin);
+        userDto.setAdmin(isAdmin);
+        // 设置用户存储空间
+        UserSpaceDto userSpaceDto = setUserSpace(user);
+        userDto.setUserSpaceDto(userSpaceDto);
+        return userDto;
+    }
+
+    private UserSpaceDto setUserSpace(User user) {
         UserSpaceDto userSpaceDto = new UserSpaceDto();
-        // todo 文件表查询使用容量
-        userSpaceDto.setUseSpace(0L);
+        userSpaceDto.setUseSpace(fileInfoDao.selectUseSpace(user.getId()));
         userSpaceDto.setTotalSpace(user.getTotalSpace());
-        RedisUtils.set(RedisKey.getKey(USER_SPACE,
-                user.getId()), userSpaceDto,
-                USER_SPACE_EXPIRE,
-                TimeUnit.MINUTES);
-        userResp.setUserSpaceDto(userSpaceDto);
-        return userResp;
+        saveUseSpace(user.getId(), userSpaceDto);
+        return userSpaceDto;
     }
 
     @Override
@@ -97,9 +102,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserSpaceDto getUseSpace(Long userId) {
-        return Optional.ofNullable(
-                    RedisUtils.get(RedisKey.getKey(USER_SPACE, userId), UserSpaceDto.class)
-                ).orElse(new UserSpaceDto());
+        UserSpaceDto userSpaceDto = RedisUtils.get(RedisKey.getKey(USER_SPACE, userId), UserSpaceDto.class);
+        if (userSpaceDto == null) {
+            userSpaceDto = new UserSpaceDto();
+            userSpaceDto.setUseSpace(fileInfoDao.selectUseSpace(userId));
+            userSpaceDto.setTotalSpace(userDao.getById(userId).getTotalSpace());
+            saveUseSpace(userId, userSpaceDto);
+        }
+        return userSpaceDto;
+
+    }
+
+    private void saveUseSpace(Long userId, UserSpaceDto userSpaceDto) {
+        RedisUtils.set(RedisKey.getKey(USER_SPACE,
+                        userId), userSpaceDto,
+                USER_SPACE_EXPIRE,
+                TimeUnit.MINUTES);
     }
 
     @Override
@@ -121,14 +139,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResp getLoginUser(HttpServletRequest request) {
-        if (request == null) {
+    public UserDto getLoginUser(HttpSession httpSession) {
+        if (httpSession == null) {
             return null;
         }
-        Object userObj = request.getSession().getAttribute(SESSION_KEY);
+        Object userObj = httpSession.getAttribute(SESSION_KEY);
         if (userObj == null) {
             throw new BusinessException(ResponseCodeEnum.CODE_901);
         }
-        return (UserResp) userObj;
+        return (UserDto) userObj;
     }
 }

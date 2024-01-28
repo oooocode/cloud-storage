@@ -4,10 +4,11 @@ import com.wth.cloudstorage.domain.vo.req.UpdatePasswordReq;
 import com.wth.cloudstorage.domain.dto.UserSpaceDto;
 import com.wth.cloudstorage.domain.entity.User;
 import com.wth.cloudstorage.domain.vo.req.UpdateUserReq;
-import com.wth.cloudstorage.domain.vo.resp.UserResp;
+import com.wth.cloudstorage.domain.vo.resp.UserDto;
 import com.wth.cloudstorage.domain.vo.req.RegisterReq;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>
@@ -21,7 +22,7 @@ public interface UserService {
 
     Long register(RegisterReq registerReq);
 
-    UserResp login(String email, String password);
+    UserDto login(String email, String password);
 
     void resetPwd(String email, String emailCode, String password);
 
@@ -31,5 +32,6 @@ public interface UserService {
 
     Boolean updatePassword(UpdatePasswordReq updatePasswordReq);
 
-    UserResp getLoginUser(HttpServletRequest request);
+    UserDto getLoginUser(HttpSession httpSession);
+
 }

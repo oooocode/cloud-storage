@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import com.wth.cloudstorage.constants.enums.FileUploadBizEnum;
 import com.wth.cloudstorage.constants.enums.ResponseCodeEnum;
 import com.wth.cloudstorage.domain.vo.req.UploadFileReq;
-import com.wth.cloudstorage.domain.vo.resp.UserResp;
+import com.wth.cloudstorage.domain.vo.resp.UserDto;
 import com.wth.cloudstorage.frame.annotation.CheckLogin;
 import com.wth.cloudstorage.frame.common.ApiResult;
 import com.wth.cloudstorage.frame.config.CosClientConfig;
@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Arrays;
 
@@ -46,20 +47,20 @@ public class FileController {
      *
      * @param multipartFile
      * @param uploadFileRequest
-     * @param request
+     * @param httpSession
      * @return
      */
     @PostMapping("/upload")
     @CheckLogin
     public ApiResult<String> uploadFile(@RequestPart("file") MultipartFile multipartFile,
-                                        UploadFileReq uploadFileRequest, HttpServletRequest request) {
+                                        UploadFileReq uploadFileRequest, HttpSession httpSession) {
         String biz = uploadFileRequest.getBiz();
         FileUploadBizEnum fileUploadBizEnum = FileUploadBizEnum.getEnumByValue(biz);
         if (fileUploadBizEnum == null) {
             throw new BusinessException(ResponseCodeEnum.CODE_600, "不支持此业务");
         }
         validFile(multipartFile, fileUploadBizEnum);
-        UserResp loginUser = userService.getLoginUser(request);
+        UserDto loginUser = userService.getLoginUser(httpSession);
         // 文件目录：根据业务、用户来划分
         String uuid = RandomStringUtils.randomAlphanumeric(8);
         String filename = uuid + "-" + multipartFile.getOriginalFilename();

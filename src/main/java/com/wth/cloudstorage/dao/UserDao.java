@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wth.cloudstorage.domain.entity.User;
 import com.wth.cloudstorage.constants.enums.UserStatusEnum;
 import com.wth.cloudstorage.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDao extends ServiceImpl<UserMapper, User> {
 
+    @Autowired
+    private UserMapper userMapper;
+
     public User getByEmail(String email) {
         return lambdaQuery()
                 .eq(User::getEmail, email)
@@ -29,5 +33,9 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .eq(User::getPassword, dbPassword)
                 .eq(User::getStatus, UserStatusEnum.ENABLE.getStatus())
                 .one();
+    }
+
+    public Integer updateUserSpace(Long userId, Long fileSize) {
+        return userMapper.updateUserSpace(userId, fileSize);
     }
 }

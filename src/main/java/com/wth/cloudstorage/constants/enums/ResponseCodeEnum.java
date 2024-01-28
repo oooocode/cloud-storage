@@ -18,6 +18,9 @@ public enum ResponseCodeEnum {
     CODE_500(500, "服务器出小差了"),
     CODE_601(601, "信息已经存在"),
     CODE_901(901, "登录超时，请稍后重试"),
+    CODE_902(901, "登录超时，请稍后重试"),
+    CODE_903(901, "登录超时，请稍后重试"),
+    CODE_904(904, "网盘空间不足，请扩容"),
     ;
 
     private final int code;
